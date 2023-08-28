@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "dnn-dependencies"
+version = "0.1.0"
+description = ""
+authors = ["Nicholas M. Synovic <nicholas.synovic@gmail.com>"]
+readme = "README.md"
+packages = [{include = "dnn_dependencies"}]
+
+[tool.poetry.group.dev.dependencies]
+netron = "^6.9.7"
+pydot = "^1.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+onnx2gexf = "dnn_dependencies.converters.onnx2gexf:main"
+gexf2dot = "dnn_dependencies.converters.gexf2dot:main"
+gexfNodeLabels2graph = "dnn_dependencies.extractors.gexfNodeLabels2graph:main"
+computeMetrics = "dnn_dependencies.metrics.computeMetrics:main"
