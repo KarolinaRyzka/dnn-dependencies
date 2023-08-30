@@ -7,12 +7,13 @@ from numpy import NaN
 from pandas import DataFrame, Series
 from sqlalchemy import Connection, Engine, MetaData
 
-from dnn_dependencies.schemas import sql
+from dnn_dependencies.schemas.sql import SQL
 
 COLUMNS: dict[str, str] = {"name": "Model Name", "filepath": "Model Filepath"}
 
 
 def readDB(dbFile: Path) -> DataFrame:
+    sql: SQL = SQL(sqliteDBPath=dbFile)
     dbEngine: Engine = sql.createEngine(path=dbFile.__str__())
     dbConn: Connection = dbEngine.connect()
 
@@ -52,7 +53,7 @@ def formatDF(df: DataFrame, keepColumns: List[str]) -> DataFrame:
 
 def writeToDB(df: DataFrame, dbFile: Path) -> None:
     dbMetadata: MetaData = MetaData()
-
+    sql: SQL = SQL(sqliteDBPath=dbFile)
     dbEngine: Engine = sql.createEngine(path=dbFile.__str__())
     dbConn: Connection = dbEngine.connect()
 

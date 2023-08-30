@@ -8,8 +8,8 @@ from networkx import DiGraph
 from pandas import DataFrame
 from progress.bar import Bar
 
-from dnn_dependencies.metrics.metrics import *
-from dnn_dependencies.schemas.sql import SQL
+from metrics.metrics import *
+from schemas.sql import SQL
 
 RANDOM_SEED: int = 42
 
@@ -169,15 +169,19 @@ def main(gexfDirectory: Path, dbFile: Path) -> None:
         indexColumn="ID",
     )
 
-    sql.closeConnection()
-
-    quit()
-
     fileGraphPairs: List[Tuple[Path, DiGraph]] = createFileGraphPairs(
         directory=gexfDirectory
     )
     df: DataFrame = computeEveryModelProperties(fileGraphPairs=fileGraphPairs)
 
+    sql.writeDFToDB(
+        df=df,
+        tableName="Model Properties",
+        keepIndex=True,
+        indexColumn="ID"
+    )
+
+    sql.closeConnection()
 
 if __name__ == "__main__":
     main()
